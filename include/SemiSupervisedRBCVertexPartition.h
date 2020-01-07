@@ -6,12 +6,12 @@
 class SemiSupervisedRBCVertexPartition : public RBConfigurationVertexPartition
 {
   public:
-    inline size_t mutables(size_t v) { return this -> _mutable[v]}
-    inline vector<size_t> const& mutables() const {return this -> _mutable[v]}
+    inline bool mutables(size_t v) { return this -> _mutables[v];};
+    inline vector<bool> const& mutables() const {return this -> _mutables;};
 
     SemiSupervisedRBCVertexPartition(Graph* graph,
                                      vector<size_t> const& membership,
-                                     double resolution_parameter
+                                     double resolution_parameter,
                                      vector<bool> const& mutables);
     SemiSupervisedRBCVertexPartition(Graph* graph,
                                      vector<size_t> const& membership,
@@ -28,7 +28,7 @@ class SemiSupervisedRBCVertexPartition : public RBConfigurationVertexPartition
     virtual double quality(double resolution_parameter);
 
     void set_mutable(vector<size_t> const& mutables);
-    void set_mutable(vector<size_t> const& mutables);
+    void set_mutable();
   protected:
     vector<bool> _mutables;
   private:
