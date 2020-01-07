@@ -3,6 +3,8 @@
 // TODO: If membership is passed, mark mutables and re-label -1 to incremented 
 // label 
 
+// TODO: implement CREATE methods
+
 /**
  * @brief 
  * Create new semi-supervised partition
@@ -39,6 +41,22 @@ SemiSupervisedRBCVertexPartition::SemiSupervisedRBCVertexPartition(Graph* graph)
     this -> set_mutability();
   }
 
+
+/**
+ * @brief Create new SemiSupervisedRBCVertexPartition object
+ * 
+ * @param graph 
+ * @return SemiSupervisedRBCVertexPartition* 
+ */
+SemiSupervisedRBCVertexPartition*  SemiSupervisedRBCVertexPartition::create(Graph* graph) {
+  return new SemiSupervisedRBCVertexPartition(graph);
+}
+
+SemiSupervisedRBCVertexPartition* SemiSupervisedRBCVertexPartition::create(Graph* graph,
+                                                                           vector<size_t> const& membership) {
+  return new SemiSupervisedRBCVertexPartition(graph, membership)
+}
+
 /**
  * @brief Set vertex mutability for each vertex in the graph
  * 
@@ -55,3 +73,10 @@ SemiSupervisedRBCVertexPartition::set_mutable() {
     this -> _mutables[i] = true;
   }
 }
+
+double SemiSupervisedRBCVertexPartition::diff_move(size_t v, size_t new_comm) : 
+  RBConfigurationVertexPartition::diff_move(v, new_comm) {};
+
+virtual double SemiSupervisedRBCVertexPartition::quality(double resolution_parameter) :
+  RBConfigurationVertexPartition::quality(resolution_parameter) {};
+
