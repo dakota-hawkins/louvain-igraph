@@ -27,8 +27,10 @@ class SemiSupervisedRBCVertexPartition : public RBConfigurationVertexPartition
     virtual double diff_move(size_t v, size_t new_comm);
     virtual double quality(double resolution_parameter);
 
-    void set_mutable(vector<size_t> const& mutables);
+    void set_mutable(vector<bool> const& mutables);
     void set_mutable();
+
+    
   protected:
     vector<bool> _mutables;
   private:
