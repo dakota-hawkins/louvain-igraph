@@ -80,3 +80,17 @@ double SemiSupervisedRBCVertexPartition::diff_move(size_t v, size_t new_comm) :
 virtual double SemiSupervisedRBCVertexPartition::quality(double resolution_parameter) :
   RBConfigurationVertexPartition::quality(resolution_parameter) {};
 
+vector<bool> SemiSupervisedRBCVertexPartition::immutable_comms() {
+  set<size_t> immutables;
+  vector<bool> collapsed(this -> nb_communities(), false);
+  for (size_t i = 0; i < this -> graph -> vcount(); i++) {
+      if (! (this -> mutables(i))) {
+          immutables.insert(this -> membership(i));
+      }
+  }
+  for (size_t c = 0; c < this -> nb_communities(); c++) {
+
+  }
+  return(immutables);
+}
+
