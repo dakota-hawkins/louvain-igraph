@@ -19,6 +19,8 @@
         RAND_COMM       -- Consider a random commmunity for improvement.
         RAND_NEIGH_COMM -- Consider a random community among the neighbours
                            for improvement.
+        MUTABLE_NEIGH_COMMS -- Consider all neighbor communities for mutable
+                               nodes.
 ****************************************************************************/
 Optimiser::Optimiser()
 {
@@ -368,6 +370,15 @@ double Optimiser::move_nodes(vector<MutableVertexPartition*> partitions, vector<
         size_t rand_layer = get_random_int(0, nb_layers - 1, &rng);
         if (graphs[rand_layer]->degree(v, IGRAPH_ALL) > 0)
           comms.insert( partitions[0]->membership(graphs[rand_layer]->get_random_neighbour(v, IGRAPH_ALL, &rng)) );
+      }
+      else if (consider_comms == MUTABLE_NEIGH_COMMS) {
+        //*********** ALL NEIGHBORING COMMUNITIES FOR MUTABLE NODES ************
+        // check mutability
+        if (partitions[0] -> mutable(v)) {
+          for (size_t layer = 0; layer < nb_layers; later++) {
+            vector<size_t> const& neigh_comm_layer = partitions[layer] -> get_neigh_comms(v, IGRAPH_ALL);
+            comms.insert(neigh_comm_layer.begin(), neigh_comm_layer.end());
+          }
       }
 
       #ifdef DEBUG
