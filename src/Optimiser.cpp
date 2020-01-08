@@ -154,12 +154,15 @@ double Optimiser::optimise_partition(vector<MutableVertexPartition*> partitions,
     // Collapse graph (i.e. community graph)
     vector<Graph*> new_collapsed_graphs(nb_layers);
     vector<MutableVertexPartition*> new_collapsed_partitions(nb_layers);
-
+    // for SemiSupervisedRBCVertexPartition we should renumber communities
+    // before collapsing so tracking mutable communities is possible
+    partitions -> membership -> renumber_communities(partitions);
     for (size_t layer = 0; layer < nb_layers; layer++)
     {
       new_collapsed_graphs[layer] = collapsed_graphs[layer]->collapse_graph(collapsed_partitions[layer]);
       // Create collapsed partition (i.e. default partition of each node in its own community).
       new_collapsed_partitions[layer] = collapsed_partitions[layer]->create(new_collapsed_graphs[layer]);
+      // if SemiSupervisedRBCVertexPartition, mark immutable comms
       #ifdef DEBUG
         cerr << "Layer " << layer << endl;
         cerr << "Old collapsed graph " << collapsed_graphs[layer] << ", vcount is " << collapsed_graphs[layer]->vcount() << endl;
